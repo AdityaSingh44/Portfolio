@@ -1,0 +1,2518 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aditya Singh — WordPress, Shopify & Full-Stack Frontend Engineer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Syne, Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#050508',
+                        surface: '#0b0c14',
+                        wp: {
+                            DEFAULT: '#21759b',
+                            glow: '#38bdf8',
+                        },
+                        shopify: {
+                            DEFAULT: '#95bf47',
+                            glow: '#4ade80',
+                        },
+                        php: {
+                            DEFAULT: '#777bb4',
+                            glow: '#a855f7',
+                        }
+                    },
+                    animation: {
+                        'marquee': 'marquee 32s linear infinite',
+                        'marquee-reverse': 'marqueeReverse 32s linear infinite',
+                        'float-slow': 'floatSlow 6s ease-in-out infinite',
+                        'float-delayed': 'floatSlow 7s ease-in-out 2s infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'spin-slow': 'spin 16s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        marqueeReverse: {
+                            '0%': { transform: 'translateX(-50%)' },
+                            '100%': { transform: 'translateX(0%)' },
+                        },
+                        floatSlow: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                            '50%': { opacity: '0.85', transform: 'scale(1.06)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --cursor-x: 50vw;
+            --cursor-y: 50vh;
+        }
+
+        body {
+            background-color: #050508;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050508;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #38bdf8, #6366f1, #95bf47);
+            border-radius: 9999px;
+        }
+
+        /* Subtle Noise Texture Overlay */
+        .noise-bg {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 0);
+            background-size: 28px 28px;
+        }
+
+        /* Architectural Cyber Grid */
+        .cyber-grid {
+            background-size: 56px 56px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Spotlight Card Effect */
+        .spotlight-card {
+            position: relative;
+            background: rgba(13, 15, 26, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+            overflow: hidden;
+        }
+
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(550px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                    rgba(56, 189, 248, 0.13),
+                    rgba(168, 85, 247, 0.05) 40%,
+                    transparent 80%);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+
+        .spotlight-card:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            box-shadow: 0 24px 60px -15px rgba(2, 132, 199, 0.22);
+        }
+
+        /* 3D Tilt Wrapper */
+        .tilt-card {
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        /* Gradient Text Shimmer */
+        .text-aurora {
+            background: linear-gradient(120deg, #ffffff 0%, #38bdf8 30%, #818cf8 60%, #a3e635 95%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Dual Cursor (Desktop Only) */
+        @media (pointer: fine) {
+
+            #cursor-dot,
+            #cursor-ring {
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: 9999;
+                border-radius: 9999px;
+                transform: translate(-50%, -50%);
+            }
+
+            #cursor-dot {
+                width: 8px;
+                height: 8px;
+                background: #38bdf8;
+                box-shadow: 0 0 12px #38bdf8;
+                transition: width 0.2s, height 0.2s, background 0.2s;
+            }
+
+            #cursor-ring {
+                width: 36px;
+                height: 36px;
+                border: 1.5px solid rgba(56, 189, 248, 0.45);
+                transition: width 0.25s ease-out, height 0.25s ease-out, border-color 0.25s, background-color 0.25s;
+            }
+
+            body.cursor-hover #cursor-ring {
+                width: 56px;
+                height: 56px;
+                border-color: rgba(163, 230, 53, 0.8);
+                background-color: rgba(163, 230, 53, 0.08);
+            }
+        }
+
+        /* Browser Mockup Preview Art Animations */
+        .project-card:hover .mockup-screen {
+            transform: scale(1.05);
+        }
+
+        .mockup-screen {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-sky-500 selection:text-slate-950 relative">
+
+    <!-- Interactive Dual-Ring Custom Cursor -->
+    <div id="cursor-dot" class="hidden lg:block"></div>
+    <div id="cursor-ring" class="hidden lg:block"></div>
+
+    <!-- Interactive Constellation Particle Canvas Background -->
+    <canvas id="constellation-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-65"></canvas>
+
+    <!-- Ambient Aurora Mesh Glows -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div
+            class="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-sky-500/15 blur-[135px] animate-pulse-glow">
+        </div>
+        <div
+            class="absolute top-1/4 -right-48 w-[500px] h-[500px] rounded-full bg-indigo-600/15 blur-[140px] animate-pulse-glow">
+        </div>
+        <div class="absolute bottom-0 left-1/3 w-[560px] h-[560px] rounded-full bg-lime-500/10 blur-[150px]"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed bottom-6 right-6 z-[100] transform translate-y-28 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3.5 px-5 py-4 rounded-2xl shadow-2xl bg-slate-900/95 backdrop-blur-xl text-white border border-sky-500/40">
+        <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <div class="text-xs font-mono uppercase tracking-wider text-sky-400">System Notification</div>
+            <div id="toast-msg" class="text-sm font-semibold">Copied to clipboard!</div>
+        </div>
+    </div>
+
+    <!-- FLOATING GLASSMORPHIC NAVIGATION DOCK -->
+    <header class="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8">
+        <div
+            class="max-w-7xl mx-auto rounded-2xl bg-slate-950/75 backdrop-blur-2xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.6)] px-4 sm:px-6 h-16 flex items-center justify-between">
+
+            <!-- Brand Identity -->
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div
+                    class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 via-indigo-500 to-lime-400 p-[1.5px] shadow-lg shadow-sky-500/20 group-hover:scale-105 transition">
+                    <div
+                        class="w-full h-full bg-[#06070d] rounded-[10px] flex items-center justify-center font-display font-extrabold text-base tracking-tighter">
+                        <span class="text-sky-400">A</span><span class="text-lime-400">S</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-bold text-base tracking-tight text-white">Aditya Singh</span>
+                        <span
+                            class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30">3+
+                            YRS EXP</span>
+                    </div>
+                    <span class="text-[11px] font-mono text-slate-400 block">WordPress • Shopify • PHP •
+                        Full-Stack</span>
+                </div>
+            </a>
+
+            <!-- Center Navigation Pills -->
+            <nav
+                class="hidden lg:flex items-center gap-1 bg-white/[0.03] border border-white/[0.07] rounded-xl p-1 text-xs font-semibold text-slate-300">
+                <a href="#bento-craft"
+                    class="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/[0.07] transition">CMS &amp; UI
+                    Craft</a>
+                <a href="#live-projects"
+                    class="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/[0.07] transition flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-lime-400"></span>
+                    <span>10 Live Projects</span>
+                </a>
+                <a href="#code-studio"
+                    class="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/[0.07] transition">Interactive
+                    Studio</a>
+                <a href="#skills" class="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/[0.07] transition">Tech
+                    Stack</a>
+                <a href="#experience"
+                    class="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/[0.07] transition">Experience</a>
+                <a href="#contact"
+                    class="px-3.5 py-2 rounded-lg hover:text-white hover:bg-white/[0.07] transition">Contact</a>
+            </nav>
+
+            <!-- Right Action Buttons -->
+            <div class="flex items-center gap-2.5">
+                <button onclick="openModal('resume-modal')"
+                    class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold bg-white/[0.05] hover:bg-white/[0.1] text-slate-200 border border-white/10 transition">
+                    <i class="fa-regular fa-file-lines text-sky-400"></i>
+                    <span>Resume</span>
+                </button>
+                <a href="#contact"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-950 bg-gradient-to-r from-sky-400 via-cyan-300 to-lime-400 hover:brightness-110 shadow-lg shadow-sky-500/25 transition">
+                    <span>Hire Me</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <button id="mobile-menu-btn" aria-label="Toggle Menu"
+                    class="lg:hidden p-2.5 rounded-xl bg-white/5 border border-white/10 text-slate-200">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu"
+            class="hidden lg:hidden mt-2 max-w-7xl mx-auto rounded-2xl bg-slate-950/95 backdrop-blur-2xl border border-white/10 p-4 space-y-2 shadow-2xl">
+            <a href="#bento-craft"
+                class="mobile-link block px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5">CMS &amp;
+                Frontend Architecture</a>
+            <a href="#live-projects"
+                class="mobile-link block px-4 py-2.5 rounded-xl text-sm font-semibold text-lime-400 hover:bg-white/5">10
+                Live Production Websites</a>
+            <a href="#code-studio"
+                class="mobile-link block px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5">Interactive Code
+                &amp; UI Studio</a>
+            <a href="#skills"
+                class="mobile-link block px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5">Skills &amp;
+                Proficiency</a>
+            <a href="#experience"
+                class="mobile-link block px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5">3+ Years Work
+                Experience</a>
+            <a href="#contact"
+                class="mobile-link block px-4 py-2.5 rounded-xl text-sm font-semibold text-sky-400 hover:bg-white/5">Contact
+                &amp; Inquiry</a>
+            <div class="pt-2 border-t border-white/10 flex gap-2">
+                <button onclick="openModal('resume-modal')"
+                    class="w-full py-2.5 rounded-xl text-xs font-mono font-semibold bg-white/5 border border-white/10 text-center">View
+                    Resume</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <main class="relative z-10 pt-28 sm:pt-32 cyber-grid">
+
+        <!-- 1. SHOWSTOPPING HERO SECTION -->
+        <section id="hero" class="relative pb-16 sm:pb-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+
+                    <!-- Left Column: High-Impact Editorial Typography & Conversion CTAs -->
+                    <div class="lg:col-span-7 space-y-7">
+
+                        <!-- Live Availability Pill -->
+                        <div
+                            class="inline-flex flex-wrap items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-inner">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-lime-400"></span>
+                            </span>
+                            <span
+                                class="text-xs font-mono uppercase tracking-wider text-slate-200 font-semibold">Available
+                                for WordPress, Shopify &amp; Full-Stack Roles</span>
+                            <span class="text-slate-600">•</span>
+                            <span class="text-xs font-mono text-sky-400">Noida, Delhi NCR</span>
+                        </div>
+
+                        <!-- Display Headline -->
+                        <h1
+                            class="font-display text-4xl sm:text-6xl lg:text-[64px] font-extrabold tracking-tight leading-[1.06] text-white">
+                            Crafting High-Converting
+                            <span class="text-aurora block mt-1">WordPress, Shopify</span>
+                            &amp; Full-Stack Web Experiences.
+                        </h1>
+
+                        <!-- Authentic Resume Bio -->
+                        <p class="text-base sm:text-lg text-slate-300/90 leading-relaxed max-w-2xl font-normal">
+                            I’m <strong class="text-white font-bold">Aditya Singh</strong> — a Web &amp; CMS Developer
+                            with <strong class="text-sky-300 font-semibold">3+ years of production experience</strong>
+                            building, customizing, and scaling responsive websites, custom themes/plugins, and ecommerce
+                            storefronts using
+                            <span class="text-white font-medium">WordPress, Shopify (Liquid), PHP, JavaScript, React.js,
+                                HTML5, CSS3, MySQL, and Node.js</span>.
+                        </p>
+
+                        <!-- Interactive Metric Badges Row -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+                            <div class="spotlight-card rounded-2xl p-3.5 border border-white/10">
+                                <div class="font-display text-2xl sm:text-3xl font-extrabold text-white">3+ <span
+                                        class="text-sky-400 text-lg">Yrs</span></div>
+                                <div class="text-[11px] font-mono text-slate-400 mt-0.5">Production Experience</div>
+                            </div>
+                            <div class="spotlight-card rounded-2xl p-3.5 border border-white/10">
+                                <div class="font-display text-2xl sm:text-3xl font-extrabold text-white">10+ <span
+                                        class="text-lime-400 text-lg">Live</span></div>
+                                <div class="text-[11px] font-mono text-slate-400 mt-0.5">Deployed Client Sites</div>
+                            </div>
+                            <div class="spotlight-card rounded-2xl p-3.5 border border-white/10">
+                                <div class="font-display text-2xl sm:text-3xl font-extrabold text-white">60% <span
+                                        class="text-indigo-400 text-lg">Fast</span></div>
+                                <div class="text-[11px] font-mono text-slate-400 mt-0.5">API Invoice Automation</div>
+                            </div>
+                            <div class="spotlight-card rounded-2xl p-3.5 border border-white/10">
+                                <div class="font-display text-2xl sm:text-3xl font-extrabold text-white">50+ <span
+                                        class="text-amber-400 text-lg">Fixed</span></div>
+                                <div class="text-[11px] font-mono text-slate-400 mt-0.5">Critical Bugs Resolved</div>
+                            </div>
+                        </div>
+
+                        <!-- Action CTAs & Verified Social Bar -->
+                        <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                            <a href="#live-projects"
+                                class="group relative inline-flex items-center gap-3 px-7 py-4 rounded-2xl font-bold text-sm text-slate-950 bg-gradient-to-r from-sky-400 via-cyan-300 to-lime-400 shadow-[0_0_35px_rgba(56,189,248,0.35)] hover:shadow-[0_0_50px_rgba(163,230,53,0.5)] transition-all duration-300 hover:-translate-y-0.5">
+                                <i class="fa-solid fa-globe text-base"></i>
+                                <span>Explore 10 Live Websites</span>
+                                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+
+                            <button onclick="openModal('resume-modal')"
+                                class="inline-flex items-center gap-2.5 px-6 py-4 rounded-2xl font-semibold text-sm text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 backdrop-blur-xl transition hover:-translate-y-0.5">
+                                <i class="fa-solid fa-file-invoice text-sky-400"></i>
+                                <span>Interactive Resume</span>
+                            </button>
+
+                            <!-- Direct Social Icon Buttons -->
+                            <div class="flex items-center gap-2">
+                                <a href="https://github.com/adityasingh44" target="_blank" rel="noopener noreferrer"
+                                    aria-label="GitHub"
+                                    class="w-12 h-12 rounded-2xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 flex items-center justify-center text-lg text-white hover:text-sky-400 hover:border-sky-400/50 transition"
+                                    title="GitHub: github.com/adityasingh44">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/aditya-singh-software-developer/" target="_blank"
+                                    rel="noopener noreferrer" aria-label="LinkedIn"
+                                    class="w-12 h-12 rounded-2xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 flex items-center justify-center text-lg text-sky-400 hover:border-sky-400/50 transition"
+                                    title="LinkedIn: aditya-singh-software-developer">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://wa.me/918416913897" target="_blank" rel="noopener noreferrer"
+                                    aria-label="WhatsApp"
+                                    class="w-12 h-12 rounded-2xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 flex items-center justify-center text-lg text-emerald-400 hover:border-emerald-400/50 transition"
+                                    title="WhatsApp: +91-8416913897">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                                <button
+                                    onclick="copyText('adityasingh5100@gmail.com', 'Email adityasingh5100@gmail.com copied!')"
+                                    aria-label="Copy Email"
+                                    class="w-12 h-12 rounded-2xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/10 flex items-center justify-center text-lg text-amber-300 hover:border-amber-300/50 transition"
+                                    title="Copy Email: adityasingh5100@gmail.com">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: 3D Layered Interactive Frontend & CMS Showcase Stack -->
+                    <div class="lg:col-span-5 relative">
+                        <!-- Floating Orbit Badge Top-Right -->
+                        <div
+                            class="hidden sm:flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-sky-400/30 shadow-2xl absolute -top-6 -right-4 z-20 animate-float-slow">
+                            <div
+                                class="w-9 h-9 rounded-xl bg-[#21759b]/25 text-sky-400 flex items-center justify-center text-lg">
+                                <i class="fa-brands fa-wordpress"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-white">7 Live WordPress Sites</div>
+                                <div class="text-[10px] font-mono text-sky-400">Custom Themes • Hooks • Woo</div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Orbit Badge Bottom-Left -->
+                        <div
+                            class="hidden sm:flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-lime-400/30 shadow-2xl absolute -bottom-6 -left-6 z-20 animate-float-delayed">
+                            <div
+                                class="w-9 h-9 rounded-xl bg-[#95bf47]/25 text-lime-400 flex items-center justify-center text-lg">
+                                <i class="fa-brands fa-shopify"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-white">Shopify Liquid OS 2.0</div>
+                                <div class="text-[10px] font-mono text-lime-400">babiesofwonder.com • Live</div>
+                            </div>
+                        </div>
+
+                        <!-- Main 3D Tilt Interactive Visual Card -->
+                        <div
+                            class="spotlight-card tilt-card rounded-3xl border border-white/15 shadow-[0_25px_80px_rgba(0,0,0,0.85)] overflow-hidden">
+
+                            <!-- Window Top Bar -->
+                            <div
+                                class="px-4 py-3.5 bg-slate-950/90 border-b border-white/10 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                                    <span class="ml-2 text-xs font-mono text-slate-400">aditya-cms-engine.studio</span>
+                                </div>
+                                <span
+                                    class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                    ● 100% Production Code
+                                </span>
+                            </div>
+
+                            <!-- Visual Storefront & Architecture Preview Graphic -->
+                            <div class="p-5 sm:p-6 space-y-5 bg-gradient-to-b from-slate-900/60 to-slate-950/90">
+
+                                <!-- Interactive Live Site Switcher Mini-Preview -->
+                                <div
+                                    class="rounded-2xl bg-slate-950 border border-white/10 p-4 relative overflow-hidden">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span id="hero-preview-badge"
+                                                class="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold bg-sky-500/20 text-sky-300">WORDPRESS
+                                                ENTERPRISE</span>
+                                            <span id="hero-preview-url"
+                                                class="text-xs font-mono text-slate-400">skylanit.com</span>
+                                        </div>
+                                        <a id="hero-preview-link" href="https://skylanit.com/" target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="text-xs font-mono text-lime-400 hover:underline flex items-center gap-1">
+                                            <span>Visit Site</span>
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                        </a>
+                                    </div>
+
+                                    <!-- Dynamic Visual Mockup Canvas inside Hero -->
+                                    <div id="hero-visual-stage"
+                                        class="rounded-xl p-4 bg-gradient-to-br from-sky-950/80 via-slate-900 to-indigo-950/80 border border-sky-500/25 transition-all duration-500">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded-lg bg-sky-400/20 border border-sky-400/40 flex items-center justify-center text-sky-300 text-xs font-bold"
+                                                    id="hero-stage-icon">S</div>
+                                                <span class="text-xs font-bold text-white" id="hero-stage-title">Skylan
+                                                    IT Solutions</span>
+                                            </div>
+                                            <div class="flex gap-1.5">
+                                                <span class="w-8 h-1.5 rounded-full bg-white/20"></span>
+                                                <span class="w-8 h-1.5 rounded-full bg-white/20"></span>
+                                                <span
+                                                    class="w-10 h-4 rounded-md bg-sky-400/30 border border-sky-400/50"></span>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-12 gap-3 items-center pt-1">
+                                            <div class="col-span-7 space-y-2">
+                                                <div class="text-xs font-mono text-sky-300" id="hero-stage-tag">Custom
+                                                    WordPress Theme &amp; PHP</div>
+                                                <div class="text-sm font-display font-bold text-white leading-snug"
+                                                    id="hero-stage-heading">Enterprise IT Architecture &amp; Digital
+                                                    Transformation</div>
+                                                <div class="flex gap-2 pt-1">
+                                                    <span
+                                                        class="px-2 py-0.5 rounded text-[10px] font-mono bg-white/10 text-slate-200"
+                                                        id="hero-stage-pill1">Custom Hooks</span>
+                                                    <span
+                                                        class="px-2 py-0.5 rounded text-[10px] font-mono bg-white/10 text-slate-200"
+                                                        id="hero-stage-pill2">Responsive UI</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-5">
+                                                <div
+                                                    class="rounded-lg bg-slate-950/80 border border-white/10 p-2.5 space-y-1.5 font-mono text-[10px]">
+                                                    <div class="flex justify-between text-slate-400"><span>Core
+                                                            Vitals</span><span class="text-emerald-400">98%</span></div>
+                                                    <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                                                        <div
+                                                            class="h-full w-[96%] bg-gradient-to-r from-sky-400 to-lime-400">
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between text-slate-400 pt-1">
+                                                        <span>Status</span><span class="text-lime-400">Live ✓</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Switcher Dots for Hero Live Sites -->
+                                    <div
+                                        class="flex items-center justify-between mt-3 pt-2 border-t border-white/5 text-[11px] font-mono">
+                                        <span class="text-slate-400">Click to preview live work:</span>
+                                        <div class="flex items-center gap-1.5">
+                                            <button onclick="setHeroShowcase(0)"
+                                                class="hero-dot px-2 py-0.5 rounded bg-sky-500 text-slate-950 font-bold transition">WP</button>
+                                            <button onclick="setHeroShowcase(1)"
+                                                class="hero-dot px-2 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 transition">Shopify</button>
+                                            <button onclick="setHeroShowcase(2)"
+                                                class="hero-dot px-2 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 transition">PHP</button>
+                                            <button onclick="setHeroShowcase(3)"
+                                                class="hero-dot px-2 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 transition">MERN</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Stack Architecture Layers -->
+                                <div class="grid grid-cols-3 gap-2.5 text-center">
+                                    <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.07]">
+                                        <i class="fa-brands fa-wordpress text-xl text-sky-400 mb-1"></i>
+                                        <div class="text-xs font-bold text-white">WordPress</div>
+                                        <div class="text-[10px] font-mono text-slate-400">Themes &amp; Plugins</div>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.07]">
+                                        <i class="fa-brands fa-shopify text-xl text-lime-400 mb-1"></i>
+                                        <div class="text-xs font-bold text-white">Shopify</div>
+                                        <div class="text-[10px] font-mono text-slate-400">Liquid &amp; OS 2.0</div>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.07]">
+                                        <i class="fa-solid fa-code-branch text-xl text-indigo-400 mb-1"></i>
+                                        <div class="text-xs font-bold text-white">Full-Stack</div>
+                                        <div class="text-[10px] font-mono text-slate-400">PHP • Node • SQL</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. INFINITE TECH STACK MARQUEE TICKER -->
+        <section aria-label="Tech Stack Ticker"
+            class="py-5 border-y border-white/10 bg-slate-950/80 backdrop-blur-md overflow-hidden">
+            <div
+                class="flex whitespace-nowrap animate-marquee items-center gap-10 text-sm font-mono font-semibold text-slate-300">
+                <!-- Set 1 -->
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-brands fa-wordpress text-sky-400 text-lg"></i> WordPress Theme &amp; Plugin
+                    Development</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-brands fa-shopify text-lime-400 text-lg"></i> Shopify &amp; Liquid OS 2.0</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-solid fa-cart-shopping text-purple-400 text-lg"></i> WooCommerce Engineering</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-brands fa-php text-indigo-400 text-lg"></i>
+                    Core PHP &amp; Custom Portals</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-brands fa-js text-amber-300 text-lg"></i>
+                    JavaScript (ES6+) &amp; DOM UI</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-brands fa-react text-cyan-400 text-lg"></i>
+                    React.js &amp; Tailwind CSS</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-brands fa-node-js text-emerald-400 text-lg"></i> Node.js, Express.js &amp; REST
+                    APIs</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-solid fa-database text-sky-300 text-lg"></i>
+                    MySQL, MongoDB &amp; PostgreSQL</span>
+                <span class="text-slate-600">✦</span>
+                <!-- Set 2 (Seamless Loop) -->
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-brands fa-wordpress text-sky-400 text-lg"></i> WordPress Theme &amp; Plugin
+                    Development</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-brands fa-shopify text-lime-400 text-lg"></i> Shopify &amp; Liquid OS 2.0</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-solid fa-cart-shopping text-purple-400 text-lg"></i> WooCommerce Engineering</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-brands fa-php text-indigo-400 text-lg"></i>
+                    Core PHP &amp; Custom Portals</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-brands fa-js text-amber-300 text-lg"></i>
+                    JavaScript (ES6+) &amp; DOM UI</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-brands fa-react text-cyan-400 text-lg"></i>
+                    React.js &amp; Tailwind CSS</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i
+                        class="fa-brands fa-node-js text-emerald-400 text-lg"></i> Node.js, Express.js &amp; REST
+                    APIs</span>
+                <span class="text-slate-600">✦</span>
+                <span class="inline-flex items-center gap-2.5"><i class="fa-solid fa-database text-sky-300 text-lg"></i>
+                    MySQL, MongoDB &amp; PostgreSQL</span>
+            </div>
+        </section>
+
+        <!-- 3. ASYMMETRICAL BENTO GRID: CMS & FRONTEND ARCHITECTURE -->
+        <section id="bento-craft" class="py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <!-- Section Heading -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+                    <div>
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-mono uppercase tracking-widest mb-3">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Architectural Mastery
+                        </div>
+                        <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+                            Frontend Elegance Meets <span class="text-aurora">CMS Power</span>
+                        </h2>
+                    </div>
+                    <p class="text-slate-400 text-sm sm:text-base max-w-md">
+                        Every website I build combines bespoke frontend micro-interactions with clean, maintainable
+                        WordPress, Shopify, PHP, and Node.js backend code.
+                    </p>
+                </div>
+
+                <!-- Bento Grid Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                    <!-- Bento Card 1: WordPress & WooCommerce (7 Cols) -->
+                    <div
+                        class="md:col-span-7 spotlight-card tilt-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between relative group">
+                        <div
+                            class="absolute -right-12 -top-12 w-52 h-52 rounded-full bg-sky-500/10 blur-2xl pointer-events-none">
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between gap-4 mb-6">
+                                <div
+                                    class="w-14 h-14 rounded-2xl bg-sky-500/15 border border-sky-400/30 text-sky-400 flex items-center justify-center text-3xl shadow-lg shadow-sky-500/10">
+                                    <i class="fa-brands fa-wordpress"></i>
+                                </div>
+                                <span
+                                    class="px-3.5 py-1 rounded-full text-xs font-mono font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30">
+                                    7 Live Production Sites
+                                </span>
+                            </div>
+
+                            <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mb-3">
+                                WordPress &amp; WooCommerce Engineering
+                            </h3>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                                Custom WordPress theme and plugin development from scratch using PHP, WordPress Hooks
+                                (Actions &amp; Filters), Custom Post Types, REST APIs, and WooCommerce template
+                                overrides—delivering fast, secure, and easily manageable client websites.
+                            </p>
+
+                            <!-- Visual Architecture Diagram Bar -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                                <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-white/10">
+                                    <div class="text-xs font-mono text-sky-400 font-semibold">01 / Themes</div>
+                                    <div class="text-sm font-bold text-white mt-0.5">Bespoke PHP Templates</div>
+                                    <div class="text-[11px] text-slate-400 mt-1">Zero-bloat responsive layouts</div>
+                                </div>
+                                <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-white/10">
+                                    <div class="text-xs font-mono text-sky-400 font-semibold">02 / Plugins</div>
+                                    <div class="text-sm font-bold text-white mt-0.5">Hooks &amp; Filters</div>
+                                    <div class="text-[11px] text-slate-400 mt-1">Reusable business logic</div>
+                                </div>
+                                <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-white/10">
+                                    <div class="text-xs font-mono text-sky-400 font-semibold">03 / Ecommerce</div>
+                                    <div class="text-sm font-bold text-white mt-0.5">WooCommerce</div>
+                                    <div class="text-[11px] text-slate-400 mt-1">Custom checkout &amp; APIs</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/10 flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Theme
+                                Development</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Plugin
+                                Customization</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">WP Hooks
+                                &amp; REST API</span>
+                            <span
+                                class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">WooCommerce</span>
+                        </div>
+                    </div>
+
+                    <!-- Bento Card 2: Shopify & Liquid Storefronts (5 Cols) -->
+                    <div
+                        class="md:col-span-5 spotlight-card tilt-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between relative group">
+                        <div
+                            class="absolute -right-12 -bottom-12 w-52 h-52 rounded-full bg-lime-500/10 blur-2xl pointer-events-none">
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between gap-4 mb-6">
+                                <div
+                                    class="w-14 h-14 rounded-2xl bg-lime-500/15 border border-lime-400/30 text-lime-400 flex items-center justify-center text-3xl shadow-lg shadow-lime-500/10">
+                                    <i class="fa-brands fa-shopify"></i>
+                                </div>
+                                <span
+                                    class="px-3.5 py-1 rounded-full text-xs font-mono font-semibold bg-lime-500/15 text-lime-300 border border-lime-500/30">
+                                    Online Store 2.0
+                                </span>
+                            </div>
+
+                            <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mb-3">
+                                Shopify &amp; Liquid Storefronts
+                            </h3>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                                Tailored Shopify theme customization, modular Liquid sections with dynamic JSON schemas,
+                                custom product/collection templates, and high-converting mobile shopping experiences.
+                            </p>
+
+                            <!-- Mini Visual Liquid Schema Card -->
+                            <div
+                                class="rounded-2xl bg-slate-950/90 border border-lime-400/20 p-4 font-mono text-xs text-slate-300 space-y-1.5 mb-6">
+                                <div class="flex items-center justify-between text-[11px] text-lime-400">
+                                    <span>sections/custom-product-grid.liquid</span>
+                                    <span>OS 2.0 ✓</span>
+                                </div>
+                                <div class="text-slate-400">{% for product in collection.products limit: 8 %}</div>
+                                <div class="pl-3 text-sky-300">&lt;div class="luxury-card" data-handle="{{
+                                    product.handle }}"&gt;</div>
+                                <div class="pl-6 text-amber-300">{{ product.price | money_with_currency }}</div>
+                                <div class="pl-3 text-sky-300">&lt;/div&gt;</div>
+                                <div class="text-slate-400">{% endfor %}</div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/10 flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Shopify
+                                Liquid</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Custom
+                                Sections</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Storefront
+                                UX</span>
+                        </div>
+                    </div>
+
+                    <!-- Bento Card 3: Frontend Design & Interactive UI (5 Cols) -->
+                    <div
+                        class="md:col-span-5 spotlight-card tilt-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-4 mb-6">
+                                <div
+                                    class="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-400 flex items-center justify-center text-2xl">
+                                    <i class="fa-solid fa-palette"></i>
+                                </div>
+                                <span
+                                    class="px-3.5 py-1 rounded-full text-xs font-mono font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                                    Pixel-Perfect UI
+                                </span>
+                            </div>
+
+                            <h3 class="font-display text-2xl font-bold text-white mb-3">
+                                Modern Frontend Engineering
+                            </h3>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                                Crafting responsive, mobile-first interfaces using <strong class="text-white">HTML5,
+                                    CSS3, JavaScript (ES6+), React.js, Tailwind CSS, and Bootstrap</strong> with smooth
+                                animations and cross-browser compatibility.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2.5 pt-2">
+                            <div class="p-3 rounded-xl bg-slate-950/80 border border-white/10 text-center">
+                                <i class="fa-brands fa-js text-amber-300 text-lg"></i>
+                                <div class="text-xs font-bold mt-1">JavaScript</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-950/80 border border-white/10 text-center">
+                                <i class="fa-brands fa-react text-cyan-400 text-lg"></i>
+                                <div class="text-xs font-bold mt-1">React.js</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-950/80 border border-white/10 text-center">
+                                <i class="fa-brands fa-css3-alt text-sky-400 text-lg"></i>
+                                <div class="text-xs font-bold mt-1">Tailwind/CSS</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bento Card 4: Backend PHP, Node.js & Automated APIs (7 Cols) -->
+                    <div
+                        class="md:col-span-7 spotlight-card tilt-card rounded-3xl p-7 sm:p-9 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-4 mb-6">
+                                <div
+                                    class="w-14 h-14 rounded-2xl bg-indigo-500/15 border border-indigo-400/30 text-indigo-400 flex items-center justify-center text-2xl">
+                                    <i class="fa-solid fa-server"></i>
+                                </div>
+                                <span
+                                    class="px-3.5 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                    60% Faster Processing Impact
+                                </span>
+                            </div>
+
+                            <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mb-3">
+                                PHP, Node.js, REST APIs &amp; Database Systems
+                            </h3>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                                Full-stack backend engineering with <strong class="text-white">Core PHP, Node.js,
+                                    Express.js, MySQL, MongoDB, and PostgreSQL</strong>. Experienced in payment gateway
+                                integrations, third-party API sync, Socket.IO real-time messaging, and automated invoice
+                                generation systems.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/10 flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Core
+                                PHP</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Node.js &amp;
+                                Express.js</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">MySQL &amp;
+                                MongoDB</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">REST APIs
+                                &amp; Webhooks</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 text-slate-300">Socket.IO
+                                &amp; JWT</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. ALL 10 REAL PRODUCTION PROJECTS SHOWCASE (WITH VISUAL BROWSER MOCKUPS) -->
+        <section id="live-projects" class="py-20 sm:py-28 border-t border-white/10 bg-slate-950/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <!-- Section Header & Filter Tabs -->
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-400/10 border border-lime-400/30 text-lime-300 text-xs font-mono uppercase tracking-widest mb-3">
+                            <span class="w-2 h-2 rounded-full bg-lime-400 animate-ping"></span>
+                            Verified Production Portfolio
+                        </div>
+                        <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+                            10 Real Deployed <span class="text-aurora">Projects &amp; Storefronts</span>
+                        </h2>
+                        <p class="text-slate-400 text-sm sm:text-base mt-2 max-w-2xl">
+                            Explore live WordPress websites, Shopify ecommerce storefronts, Core PHP institutional
+                            portals, and full-stack Node/React applications I have built and customized.
+                        </p>
+                    </div>
+
+                    <!-- Category Filter Pills -->
+                    <div
+                        class="flex flex-wrap gap-2 bg-white/[0.03] p-1.5 rounded-2xl border border-white/10 self-start lg:self-auto">
+                        <button onclick="filterProjects('all')" data-proj-tab="all"
+                            class="proj-filter-btn px-4 py-2.5 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-sky-400 to-lime-400 text-slate-950 shadow-md transition">
+                            All Projects (10)
+                        </button>
+                        <button onclick="filterProjects('wordpress')" data-proj-tab="wordpress"
+                            class="proj-filter-btn px-4 py-2.5 rounded-xl text-xs font-mono font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+                            <i class="fa-brands fa-wordpress text-sky-400 mr-1"></i>WordPress (7)
+                        </button>
+                        <button onclick="filterProjects('shopify')" data-proj-tab="shopify"
+                            class="proj-filter-btn px-4 py-2.5 rounded-xl text-xs font-mono font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+                            <i class="fa-brands fa-shopify text-lime-400 mr-1"></i>Shopify (1)
+                        </button>
+                        <button onclick="filterProjects('php')" data-proj-tab="php"
+                            class="proj-filter-btn px-4 py-2.5 rounded-xl text-xs font-mono font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+                            <i class="fa-brands fa-php text-indigo-400 mr-1"></i>Core PHP (1)
+                        </button>
+                        <button onclick="filterProjects('fullstack')" data-proj-tab="fullstack"
+                            class="proj-filter-btn px-4 py-2.5 rounded-xl text-xs font-mono font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition">
+                            <i class="fa-brands fa-node-js text-emerald-400 mr-1"></i>Full-Stack (1)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Projects Grid (Populated with Rich Browser Mockups via JS) -->
+                <div id="projects-showcase-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                    <!-- Rendered dynamically by renderProjectsGrid() -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. INTERACTIVE CMS CODE & LIVE UI STUDIO -->
+        <section id="code-studio" class="py-20 sm:py-28 border-t border-white/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-mono uppercase tracking-widest mb-3">
+                            <i class="fa-solid fa-terminal"></i> Interactive Engineering Sandbox
+                        </div>
+                        <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+                            Under the Hood: <span class="text-aurora">Code + Live Output</span>
+                        </h2>
+                    </div>
+                    <p class="text-slate-400 text-sm sm:text-base max-w-md">
+                        Switch between my WordPress PHP Hooks, Shopify OS 2.0 Liquid templates, and automated
+                        Node.js/MySQL Invoice API to inspect both the code and rendered component.
+                    </p>
+                </div>
+
+                <div class="spotlight-card rounded-3xl border border-white/15 overflow-hidden shadow-2xl">
+                    <!-- Top Studio Bar -->
+                    <div
+                        class="px-4 sm:px-6 py-4 bg-slate-950 border-b border-white/10 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                            <span class="ml-2 text-xs font-mono text-slate-400">cms-architecture-workbench</span>
+                        </div>
+
+                        <!-- Workbench File Tabs -->
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="switchStudioTab('wp')" id="studio-tab-wp"
+                                class="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-sky-500 text-slate-950 transition flex items-center gap-2">
+                                <i class="fa-brands fa-wordpress"></i> wp-custom-hooks.php
+                            </button>
+                            <button onclick="switchStudioTab('shopify')" id="studio-tab-shopify"
+                                class="px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white/5 text-slate-300 hover:text-white transition flex items-center gap-2">
+                                <i class="fa-brands fa-shopify text-lime-400"></i> section-bundle.liquid
+                            </button>
+                            <button onclick="switchStudioTab('invoice')" id="studio-tab-invoice"
+                                class="px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white/5 text-slate-300 hover:text-white transition flex items-center gap-2">
+                                <i class="fa-solid fa-bolt text-amber-400"></i> invoice-automation-api.js
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Split Code & Visual Preview Area -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12">
+                        <!-- Code Editor Column (7 Cols) -->
+                        <div
+                            class="lg:col-span-7 p-6 sm:p-8 bg-[#070911] border-b lg:border-b-0 lg:border-r border-white/10 font-mono text-xs sm:text-[13px] leading-relaxed overflow-x-auto">
+
+                            <!-- Tab 1: WordPress Code -->
+                            <div id="studio-code-wp" class="space-y-1.5 text-slate-300">
+                                <div class="text-slate-500">// Custom WordPress REST Endpoint &amp; Dynamic Lead/Filter
+                                    Hook</div>
+                                <div><span class="text-pink-400">add_action</span>(<span
+                                        class="text-amber-300">'rest_api_init'</span>, <span
+                                        class="text-sky-400">function</span>() {</div>
+                                <div class="pl-4"><span class="text-pink-400">register_rest_route</span>(<span
+                                        class="text-amber-300">'skylan/v1'</span>, <span
+                                        class="text-amber-300">'/lead-capture'</span>, [</div>
+                                <div class="pl-8"><span class="text-amber-300">'methods'</span> =&gt; <span
+                                        class="text-amber-300">'POST'</span>,</div>
+                                <div class="pl-8"><span class="text-amber-300">'callback'</span> =&gt; <span
+                                        class="text-amber-300">'aditya_handle_custom_lead'</span>,</div>
+                                <div class="pl-8"><span class="text-amber-300">'permission_callback'</span> =&gt; <span
+                                        class="text-amber-300">'__return_true'</span>,</div>
+                                <div class="pl-4">]);</div>
+                                <div>});</div>
+                                <div class="pt-2 text-slate-500">// WooCommerce Dynamic Cart Fragment Filter</div>
+                                <div><span class="text-pink-400">add_filter</span>(<span
+                                        class="text-amber-300">'woocommerce_add_to_cart_fragments'</span>, <span
+                                        class="text-sky-400">function</span>(<span
+                                        class="text-lime-300">$fragments</span>) {</div>
+                                <div class="pl-4"><span class="text-lime-300">$count</span> = <span
+                                        class="text-sky-300">WC</span>()-&gt;cart-&gt;<span
+                                        class="text-pink-400">get_cart_contents_count</span>();</div>
+                                <div class="pl-4"><span class="text-lime-300">$fragments</span>[<span
+                                        class="text-amber-300">'.header-cart-pill'</span>] = <span
+                                        class="text-amber-300">"&lt;span class='header-cart-pill'&gt;{$count}
+                                        Items&lt;/span&gt;"</span>;</div>
+                                <div class="pl-4"><span class="text-pink-400">return</span> <span
+                                        class="text-lime-300">$fragments</span>;</div>
+                                <div>});</div>
+                            </div>
+
+                            <!-- Tab 2: Shopify Liquid Code -->
+                            <div id="studio-code-shopify" class="hidden space-y-1.5 text-slate-300">
+                                <div class="text-slate-500">{%- comment -%} Babies of Wonder — Custom Shopify OS 2.0
+                                    Section {%- endcomment -%}</div>
+                                <div><span class="text-sky-400">&lt;section</span> <span
+                                        class="text-lime-300">class=</span><span
+                                        class="text-amber-300">"bow-featured-collection"</span> <span
+                                        class="text-lime-300">data-section-id=</span><span class="text-amber-300">"{{
+                                        section.id }}"</span><span class="text-sky-400">&gt;</span></div>
+                                <div class="pl-4"><span class="text-pink-400">{% for</span> product <span
+                                        class="text-pink-400">in</span> section.settings.collection.products limit: 4
+                                    <span class="text-pink-400">%}</span>
+                                </div>
+                                <div class="pl-8"><span class="text-sky-400">&lt;article</span> <span
+                                        class="text-lime-300">class=</span><span
+                                        class="text-amber-300">"bow-product-card"</span><span
+                                        class="text-sky-400">&gt;</span></div>
+                                <div class="pl-12">&lt;h4&gt;{{ product.title | escape }}&lt;/h4&gt;</div>
+                                <div class="pl-12">&lt;span class="price"&gt;{{ product.price | money }}&lt;/span&gt;
+                                </div>
+                                <div class="pl-12">&lt;button data-ajax-add="{{ product.variants.first.id }}"&gt;Quick
+                                    Add&lt;/button&gt;</div>
+                                <div class="pl-8"><span class="text-sky-400">&lt;/article&gt;</span></div>
+                                <div class="pl-4"><span class="text-pink-400">{% endfor %}</span></div>
+                                <div><span class="text-sky-400">&lt;/section&gt;</span></div>
+                                <div class="text-pink-400 pt-1">{% schema %}</div>
+                                <div>{ <span class="text-amber-300">"name"</span>: <span class="text-amber-300">"Wonder
+                                        Baby Grid"</span>, <span class="text-amber-300">"presets"</span>: [{ <span
+                                        class="text-amber-300">"name"</span>: <span class="text-amber-300">"Baby
+                                        Showcase"</span> }] }</div>
+                                <div class="text-pink-400">{% endschema %}</div>
+                            </div>
+
+                            <!-- Tab 3: Node/MySQL Invoice API Code -->
+                            <div id="studio-code-invoice" class="hidden space-y-1.5 text-slate-300">
+                                <div class="text-slate-500">// Automated MySQL Work-Order Invoice API (Reduced Time by
+                                    60%)</div>
+                                <div><span class="text-pink-400">router</span>.<span
+                                        class="text-sky-400">post</span>(<span
+                                        class="text-amber-300">'/api/v1/work-orders/:id/invoice'</span>, <span
+                                        class="text-pink-400">async</span> (req, res) =&gt; {</div>
+                                <div class="pl-4"><span class="text-pink-400">const</span> [workOrder] = <span
+                                        class="text-pink-400">await</span> mysqlPool.<span
+                                        class="text-sky-400">execute</span>(</div>
+                                <div class="pl-8"><span class="text-amber-300">'SELECT * FROM work_orders WHERE order_id
+                                        = ? AND status = "COMPLETED"'</span>,</div>
+                                <div class="pl-8">[req.params.id]</div>
+                                <div class="pl-4">);</div>
+                                <div class="pl-4"><span class="text-pink-400">const</span> invoiceRecord = <span
+                                        class="text-pink-400">await</span> <span
+                                        class="text-sky-400">generateInvoicePDFAndSync</span>(workOrder);</div>
+                                <div class="pl-4"><span class="text-pink-400">return</span> res.<span
+                                        class="text-sky-400">status</span>(<span class="text-lime-400">200</span>).<span
+                                        class="text-sky-400">json</span>({</div>
+                                <div class="pl-8">automated: <span class="text-lime-400">true</span>, timeSaved: <span
+                                        class="text-amber-300">'60%'</span>, invoiceNo: invoiceRecord.number</div>
+                                <div class="pl-4">});</div>
+                                <div>});</div>
+                            </div>
+
+                        </div>
+
+                        <!-- Live Rendered Visual Output Column (5 Cols) -->
+                        <div class="lg:col-span-5 p-6 sm:p-8 bg-slate-900/60 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-mono uppercase tracking-wider text-slate-400">Live
+                                        Component Output</span>
+                                    <span id="studio-output-badge"
+                                        class="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-sky-500/20 text-sky-300">WordPress
+                                        + Woo</span>
+                                </div>
+
+                                <!-- Interactive Output Box -->
+                                <div id="studio-output-stage"
+                                    class="rounded-2xl bg-slate-950 border border-white/10 p-5 space-y-4">
+                                    <!-- Populated dynamically by switchStudioTab -->
+                                </div>
+                            </div>
+
+                            <div
+                                class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+                                <span>Clean, modular, production-tested architecture</span>
+                                <a href="#live-projects" class="text-sky-400 font-semibold hover:underline">See Live
+                                    Sites →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. TECHNICAL SKILLS & PROFICIENCY MATRIX -->
+        <section id="skills" class="py-20 sm:py-28 border-t border-white/10 bg-slate-950/40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-mono uppercase tracking-widest mb-3">
+                            <i class="fa-solid fa-layer-group"></i> Complete Technical Stack
+                        </div>
+                        <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+                            Skills &amp; <span class="text-aurora">Ecosystem Matrix</span>
+                        </h2>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterSkills('all')" data-skill-tab="all"
+                            class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-sky-400 text-slate-950 transition">All
+                            Stack</button>
+                        <button onclick="filterSkills('cms')" data-skill-tab="cms"
+                            class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white/5 text-slate-300 hover:text-white transition">WordPress
+                            &amp; Shopify</button>
+                        <button onclick="filterSkills('frontend')" data-skill-tab="frontend"
+                            class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white/5 text-slate-300 hover:text-white transition">Frontend
+                            UI</button>
+                        <button onclick="filterSkills('backend')" data-skill-tab="backend"
+                            class="skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white/5 text-slate-300 hover:text-white transition">Backend,
+                            DB &amp; DevOps</button>
+                    </div>
+                </div>
+
+                <div id="skills-matrix-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. WORK EXPERIENCE & EDUCATION TIMELINE -->
+        <section id="experience" class="py-20 sm:py-28 border-t border-white/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+                    <!-- Left 7 Cols: 3+ Years Work Experience Timeline -->
+                    <div class="lg:col-span-7">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-mono uppercase tracking-widest mb-3">
+                            <i class="fa-solid fa-briefcase"></i> Career Trajectory
+                        </div>
+                        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mb-10">
+                            3+ Years Work Experience
+                        </h2>
+
+                        <div class="relative border-l-2 border-sky-500/30 ml-3 pl-7 space-y-9">
+
+                            <!-- Role 1: Skylan Information -->
+                            <div class="relative group">
+                                <span
+                                    class="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-sky-400 ring-4 ring-slate-950 shadow-[0_0_15px_#38bdf8]"></span>
+                                <div class="spotlight-card rounded-3xl p-6 sm:p-7 border border-white/10">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                        <div>
+                                            <div class="flex items-center gap-2.5">
+                                                <h3 class="font-display text-xl font-bold text-white">Web Developer</h3>
+                                                <span
+                                                    class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Present</span>
+                                            </div>
+                                            <p class="text-sm font-semibold text-sky-400 mt-0.5">Skylan Information •
+                                                Noida, Delhi NCR</p>
+                                        </div>
+                                        <span
+                                            class="text-xs font-mono px-3 py-1.5 rounded-xl bg-white/5 text-slate-300 border border-white/10">Nov
+                                            2024 – Present</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-slate-300 mt-4">
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-sky-400 mt-1 text-xs"></i><span>Develop
+                                                and maintain business websites and ecommerce applications using
+                                                <strong>WordPress, PHP, Shopify, JavaScript, HTML5, and
+                                                    CSS3</strong>.</span></li>
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-sky-400 mt-1 text-xs"></i><span>Customize
+                                                WordPress themes and build reusable functionality using <strong>PHP,
+                                                    WordPress APIs, action/filter hooks</strong>, and frontend
+                                                scripts.</span></li>
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-lime-400 mt-1 text-xs"></i><span>Execute
+                                                <strong>Shopify storefront customization</strong>, responsive layouts,
+                                                reusable Liquid sections, and theme-level frontend enhancements.</span>
+                                        </li>
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>Build
+                                                backend services and REST APIs using <strong>Node.js and
+                                                    Express.js</strong> integrated with <strong>MySQL and
+                                                    MongoDB</strong>.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Role 2: Weblozy Software -->
+                            <div class="relative group">
+                                <span
+                                    class="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-lime-400 ring-4 ring-slate-950 shadow-[0_0_15px_#a3e635]"></span>
+                                <div class="spotlight-card rounded-3xl p-6 sm:p-7 border border-white/10">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                        <div>
+                                            <h3 class="font-display text-xl font-bold text-white">Web Developer</h3>
+                                            <p class="text-sm font-semibold text-lime-400 mt-0.5">Weblozy Software •
+                                                Noida, Delhi NCR</p>
+                                        </div>
+                                        <span
+                                            class="text-xs font-mono px-3 py-1.5 rounded-xl bg-white/5 text-slate-300 border border-white/10">Mar
+                                            2024 – Aug 2024</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-slate-300 mt-4">
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-lime-400 mt-1 text-xs"></i><span>Developed
+                                                and customized websites and web applications using <strong>WordPress,
+                                                    PHP, JavaScript, HTML5, CSS3, and MySQL</strong>.</span></li>
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-lime-400 mt-1 text-xs"></i><span>Built an
+                                                <strong>automated invoice generation system</strong> with a dedicated
+                                                API layer integrated with MySQL work orders, <strong>reducing manual
+                                                    processing time by 60%</strong>.</span></li>
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-lime-400 mt-1 text-xs"></i><span>Integrated
+                                                REST APIs connecting frontend interfaces with backend services and MySQL
+                                                database operations.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Role 3: Offshore Marketers -->
+                            <div class="relative group">
+                                <span
+                                    class="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-indigo-400 ring-4 ring-slate-950 shadow-[0_0_15px_#818cf8]"></span>
+                                <div class="spotlight-card rounded-3xl p-6 sm:p-7 border border-white/10">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                        <div>
+                                            <h3 class="font-display text-xl font-bold text-white">Web Developer Trainee
+                                            </h3>
+                                            <p class="text-sm font-semibold text-indigo-400 mt-0.5">Offshore Marketers •
+                                                Chandigarh</p>
+                                        </div>
+                                        <span
+                                            class="text-xs font-mono px-3 py-1.5 rounded-xl bg-white/5 text-slate-300 border border-white/10">Jul
+                                            2023 – Jan 2024</span>
+                                    </div>
+                                    <ul class="space-y-2 text-sm text-slate-300 mt-4">
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>Developed
+                                                and customized responsive client websites using <strong>WordPress, PHP,
+                                                    HTML5, CSS3, and JavaScript</strong>.</span></li>
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span><strong>Resolved
+                                                    50+ production bugs</strong> and implementation issues across live
+                                                client websites and web applications.</span></li>
+                                        <li class="flex items-start gap-2.5"><i
+                                                class="fa-solid fa-check text-indigo-400 mt-1 text-xs"></i><span>Supported
+                                                website maintenance, cross-browser compatibility, and frontend
+                                                performance optimization.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Right 5 Cols: Academic Credentials & Key Achievements -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div>
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-400/10 border border-lime-400/30 text-lime-300 text-xs font-mono uppercase tracking-widest mb-3">
+                                <i class="fa-solid fa-graduation-cap"></i> Academic Credentials
+                            </div>
+                            <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white mb-6">
+                                Education
+                            </h2>
+                        </div>
+
+                        <!-- MCA Card -->
+                        <div class="spotlight-card rounded-3xl p-6 sm:p-7 border border-white/10">
+                            <div class="flex items-center justify-between mb-3">
+                                <span
+                                    class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">2021
+                                    – 2023</span>
+                                <span class="text-xs font-mono text-slate-400">Postgraduate</span>
+                            </div>
+                            <h3 class="font-display text-xl font-bold text-white">Master of Computer Applications (MCA)
+                            </h3>
+                            <p class="text-sm font-semibold text-sky-400 mt-1">Lovely Professional University (LPU)</p>
+                            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                Focused on Full-Stack Web Engineering, Advanced Database Management Systems
+                                (MySQL/MongoDB), Software Architecture, and Cloud Deployment.
+                            </p>
+                        </div>
+
+                        <!-- BCA Card -->
+                        <div class="spotlight-card rounded-3xl p-6 sm:p-7 border border-white/10">
+                            <div class="flex items-center justify-between mb-3">
+                                <span
+                                    class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-lime-500/15 text-lime-300 border border-lime-500/30">2018
+                                    – 2021</span>
+                                <span class="text-xs font-mono text-slate-400">Undergraduate</span>
+                            </div>
+                            <h3 class="font-display text-xl font-bold text-white">Bachelor of Computer Applications
+                                (BCA)</h3>
+                            <p class="text-sm font-semibold text-lime-400 mt-1">United Institute of Management,
+                                Prayagraj</p>
+                            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                                Strong foundation in Programming, Web Development (HTML5, CSS3, JavaScript, PHP), Data
+                                Structures, and Relational Databases.
+                            </p>
+                        </div>
+
+                        <!-- Production Deployment Readiness Card -->
+                        <div
+                            class="spotlight-card rounded-3xl p-6 sm:p-7 border border-lime-400/30 bg-gradient-to-br from-lime-500/10 via-slate-900 to-sky-500/10">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-lime-400/20 text-lime-300 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-rocket"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-display text-lg font-bold text-white">GitHub &amp; Render Ready</h3>
+                                    <p class="text-xs font-mono text-lime-300">Zero-Build Static Deployment</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                                This portfolio is engineered as a self-contained, high-speed production bundle ready for
+                                instant hosting on <strong>GitHub Pages</strong> or <strong>Render Static
+                                    Sites</strong>.
+                            </p>
+                            <button onclick="openModal('deploy-modal')"
+                                class="w-full py-2.5 px-4 rounded-xl text-xs font-mono font-bold bg-lime-400 text-slate-950 hover:brightness-110 transition">
+                                View 1-Minute Deploy Steps →
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. HIGH-IMPACT CONTACT & PROJECT DISPATCH HUB -->
+        <section id="contact" class="py-20 sm:py-28 border-t border-white/10 bg-slate-950/70">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+                    <!-- Left 5 Cols: Direct Contact Channels -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div>
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-mono uppercase tracking-widest mb-3">
+                                <i class="fa-solid fa-paper-plane"></i> Direct Contact
+                            </div>
+                            <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+                                Let’s Build Your Next <span class="text-aurora">CMS or Web Platform</span>
+                            </h2>
+                            <p class="text-slate-400 text-sm sm:text-base mt-3 leading-relaxed">
+                                Available for full-time roles, agency partnerships, and freelance WordPress, Shopify,
+                                PHP, or Full-Stack projects.
+                            </p>
+                        </div>
+
+                        <!-- Interactive Copy / Action Cards -->
+                        <div class="space-y-3.5">
+                            <!-- Email -->
+                            <div class="spotlight-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3.5 min-w-0">
+                                    <div
+                                        class="w-11 h-11 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center shrink-0">
+                                        <i class="fa-regular fa-envelope text-lg"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-[11px] font-mono text-slate-400">EMAIL ADDRESS</div>
+                                        <a href="mailto:adityasingh5100@gmail.com"
+                                            class="text-sm font-bold text-white hover:text-sky-400 truncate block">adityasingh5100@gmail.com</a>
+                                    </div>
+                                </div>
+                                <button onclick="copyText('adityasingh5100@gmail.com', 'Email copied to clipboard!')"
+                                    class="px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-white/5 hover:bg-sky-500 hover:text-slate-950 border border-white/10 transition shrink-0">
+                                    Copy
+                                </button>
+                            </div>
+
+                            <!-- Phone / WhatsApp -->
+                            <div class="spotlight-card rounded-2xl p-4 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3.5">
+                                    <div
+                                        class="w-11 h-11 rounded-xl bg-lime-500/15 text-lime-400 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-phone text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-[11px] font-mono text-slate-400">PHONE &amp; WHATSAPP</div>
+                                        <a href="tel:+918416913897"
+                                            class="text-sm font-bold text-white hover:text-lime-400">+91-8416913897</a>
+                                    </div>
+                                </div>
+                                <div class="flex gap-1.5">
+                                    <a href="https://wa.me/918416913897" target="_blank" rel="noopener noreferrer"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-400 hover:text-slate-950 transition">
+                                        WhatsApp
+                                    </a>
+                                    <button onclick="copyText('+91-8416913897', 'Phone number copied!')"
+                                        class="px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-white/5 hover:bg-lime-400 hover:text-slate-950 border border-white/10 transition">
+                                        Copy
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- GitHub & LinkedIn Cards -->
+                            <div class="grid grid-cols-2 gap-3.5 pt-1">
+                                <a href="https://github.com/adityasingh44" target="_blank" rel="noopener noreferrer"
+                                    class="spotlight-card rounded-2xl p-4 flex items-center gap-3 hover:border-sky-400/50 transition">
+                                    <i class="fa-brands fa-github text-2xl text-white"></i>
+                                    <div>
+                                        <div class="text-xs font-bold text-white">GitHub</div>
+                                        <div class="text-[11px] font-mono text-slate-400">@adityasingh44</div>
+                                    </div>
+                                </a>
+                                <a href="https://www.linkedin.com/in/aditya-singh-software-developer/" target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="spotlight-card rounded-2xl p-4 flex items-center gap-3 hover:border-sky-400/50 transition">
+                                    <i class="fa-brands fa-linkedin text-2xl text-sky-400"></i>
+                                    <div>
+                                        <div class="text-xs font-bold text-white">LinkedIn</div>
+                                        <div class="text-[11px] font-mono text-slate-400">Connect ↗</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right 7 Cols: Interactive Project / Hiring Inquiry Form -->
+                    <div class="lg:col-span-7">
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)"
+                            class="spotlight-card rounded-3xl p-6 sm:p-9 border border-white/15 space-y-6">
+                            <div
+                                class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
+                                <div>
+                                    <h3 class="font-display text-xl font-bold text-white">Send a Direct Project or
+                                        Hiring Brief</h3>
+                                    <p class="text-xs text-slate-400 mt-0.5">Select your requirement and dispatch via
+                                        Email or WhatsApp</p>
+                                </div>
+                                <span
+                                    class="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                    ● Instant Dispatch
+                                </span>
+                            </div>
+
+                            <!-- Platform Selector Pills -->
+                            <div>
+                                <label class="block text-xs font-mono uppercase tracking-wider text-slate-400 mb-2.5">1.
+                                    Select Platform / Role Requirement</label>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                    <button type="button" onclick="selectInquiryType(this, 'WordPress Development')"
+                                        class="inq-btn p-3 rounded-2xl border border-sky-400 bg-sky-500/15 text-sky-300 text-xs font-bold flex flex-col items-center gap-1.5 transition">
+                                        <i class="fa-brands fa-wordpress text-lg"></i>
+                                        <span>WordPress</span>
+                                    </button>
+                                    <button type="button" onclick="selectInquiryType(this, 'Shopify Storefront')"
+                                        class="inq-btn p-3 rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 hover:border-lime-400/50 text-xs font-bold flex flex-col items-center gap-1.5 transition">
+                                        <i class="fa-brands fa-shopify text-lg text-lime-400"></i>
+                                        <span>Shopify</span>
+                                    </button>
+                                    <button type="button" onclick="selectInquiryType(this, 'PHP / Full-Stack API')"
+                                        class="inq-btn p-3 rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 hover:border-indigo-400/50 text-xs font-bold flex flex-col items-center gap-1.5 transition">
+                                        <i class="fa-solid fa-code text-lg text-indigo-400"></i>
+                                        <span>PHP / Node.js</span>
+                                    </button>
+                                    <button type="button"
+                                        onclick="selectInquiryType(this, 'Full-Time / Contract Hiring')"
+                                        class="inq-btn p-3 rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 hover:border-emerald-400/50 text-xs font-bold flex flex-col items-center gap-1.5 transition">
+                                        <i class="fa-solid fa-briefcase text-lg text-emerald-400"></i>
+                                        <span>Full-Time Hire</span>
+                                    </button>
+                                </div>
+                                <input type="hidden" id="inquiry-type" value="WordPress Development" />
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="inq-name" class="block text-xs font-mono text-slate-300 mb-1.5">YOUR
+                                        NAME *</label>
+                                    <input id="inq-name" type="text" required placeholder="e.g., Vikram Mehta"
+                                        class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-sm text-white focus:outline-none focus:border-sky-400" />
+                                </div>
+                                <div>
+                                    <label for="inq-email" class="block text-xs font-mono text-slate-300 mb-1.5">YOUR
+                                        EMAIL *</label>
+                                    <input id="inq-email" type="email" required placeholder="name@company.com"
+                                        class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-sm text-white focus:outline-none focus:border-sky-400" />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="inq-msg" class="block text-xs font-mono text-slate-300 mb-1.5">PROJECT BRIEF
+                                    OR JOB DETAILS *</label>
+                                <textarea id="inq-msg" rows="4" required
+                                    placeholder="Share details about your WordPress website, Shopify store customization, PHP/Node API requirement, or role opportunity..."
+                                    class="w-full px-4 py-3 rounded-xl bg-slate-950/90 border border-white/10 text-sm text-white focus:outline-none focus:border-sky-400"></textarea>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <button type="submit"
+                                    class="flex-1 py-4 px-6 rounded-2xl font-bold text-sm text-slate-950 bg-gradient-to-r from-sky-400 via-cyan-300 to-lime-400 hover:brightness-110 shadow-lg shadow-sky-500/20 transition flex items-center justify-center gap-2">
+                                    <i class="fa-regular fa-envelope"></i>
+                                    <span>Send via Email</span>
+                                </button>
+                                <button type="button" onclick="sendViaWhatsApp()"
+                                    class="py-4 px-6 rounded-2xl font-bold text-sm text-emerald-300 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 transition flex items-center justify-center gap-2">
+                                    <i class="fa-brands fa-whatsapp text-base"></i>
+                                    <span>Send via WhatsApp</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 py-10 border-t border-white/10 bg-[#040407] text-xs text-slate-400">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-lime-400 p-[1px]">
+                    <div
+                        class="w-full h-full bg-slate-950 rounded-[7px] flex items-center justify-center font-display font-bold text-white">
+                        AS</div>
+                </div>
+                <span><strong class="text-white">Aditya Singh</strong> — WordPress, Shopify &amp; PHP Full-Stack
+                    Developer</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 font-mono">
+                <a href="https://github.com/adityasingh44" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-sky-400">GitHub</a>
+                <a href="https://www.linkedin.com/in/aditya-singh-software-developer/" target="_blank"
+                    rel="noopener noreferrer" class="hover:text-sky-400">LinkedIn</a>
+                <a href="mailto:adityasingh5100@gmail.com" class="hover:text-lime-400">adityasingh5100@gmail.com</a>
+                <span>+91-8416913897</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: PROJECT ARCHITECTURE CASE STUDY MODAL -->
+    <div id="project-modal"
+        class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div
+            class="relative w-full max-w-2xl rounded-3xl bg-slate-900 border border-white/15 shadow-2xl overflow-hidden">
+            <div id="pm-header-banner" class="h-36 p-6 flex flex-col justify-between relative overflow-hidden">
+                <div class="flex items-center justify-between relative z-10">
+                    <span id="pm-category"
+                        class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-black/40 backdrop-blur-md text-white border border-white/20"></span>
+                    <button onclick="closeModal('project-modal')"
+                        class="w-9 h-9 rounded-xl bg-black/50 text-white hover:bg-black/80 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="relative z-10">
+                    <h3 id="pm-title" class="font-display text-2xl sm:text-3xl font-extrabold text-white"></h3>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-5">
+                <div
+                    class="flex items-center justify-between flex-wrap gap-2 bg-slate-950 p-3.5 rounded-2xl border border-white/10">
+                    <div class="flex items-center gap-2 text-xs font-mono text-slate-300 truncate">
+                        <i class="fa-solid fa-globe text-sky-400"></i>
+                        <span id="pm-url-text" class="truncate"></span>
+                    </div>
+                    <a id="pm-live-btn" href="#" target="_blank" rel="noopener noreferrer"
+                        class="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-sky-400 to-lime-400 text-slate-950 hover:brightness-110 transition shrink-0">
+                        Open Live Website ↗
+                    </a>
+                </div>
+
+                <p id="pm-desc" class="text-sm text-slate-300 leading-relaxed"></p>
+
+                <div>
+                    <h4 class="text-xs font-mono uppercase tracking-wider text-sky-400 font-semibold mb-2.5">Key
+                        Engineering &amp; Frontend Highlights</h4>
+                    <ul id="pm-highlights" class="space-y-2 text-sm text-slate-200"></ul>
+                </div>
+
+                <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
+                    <div id="pm-tech" class="flex flex-wrap gap-1.5"></div>
+                    <button onclick="closeModal('project-modal')"
+                        class="px-4 py-2 rounded-xl text-xs font-mono bg-white/10 text-white hover:bg-white/20">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: INTERACTIVE RESUME VIEWER MODAL -->
+    <div id="resume-modal"
+        class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div
+            class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-slate-900 border border-white/15 shadow-2xl p-6 sm:p-10 space-y-6">
+            <div class="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-widest text-sky-400">Official Curriculum
+                        Vitae</span>
+                    <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1">Aditya Singh</h3>
+                    <p class="text-sm font-mono text-lime-400">WordPress Developer | Shopify Developer | PHP Developer
+                    </p>
+                    <p class="text-xs text-slate-400 mt-1">Noida, Delhi NCR • +91-8416913897 • adityasingh5100@gmail.com
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="window.print()"
+                        class="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-sky-400 text-slate-950 hover:brightness-110 transition">
+                        <i class="fa-solid fa-print mr-1"></i> Print / Save PDF
+                    </button>
+                    <button onclick="closeModal('resume-modal')"
+                        class="w-9 h-9 rounded-xl bg-white/10 text-white hover:bg-white/20 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-sm text-slate-300">
+                <div>
+                    <h4 class="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold mb-1">Professional
+                        Summary</h4>
+                    <p class="leading-relaxed">
+                        Web Developer with 3+ years of experience building, customizing, and maintaining web
+                        applications and ecommerce websites using WordPress, Shopify, PHP, JavaScript, HTML, CSS, MySQL,
+                        and Node.js. Experienced in WordPress theme and plugin development, Shopify theme customization,
+                        responsive website development, REST API integration, database driven applications, third party
+                        integrations, bug fixing, and performance focused web development.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div class="p-4 rounded-2xl bg-slate-950 border border-white/10">
+                        <div class="text-xs font-mono text-lime-400 font-bold mb-1">CMS &amp; ECOMMERCE</div>
+                        <p class="text-xs text-slate-300">WordPress Theme &amp; Plugin Development, WordPress Hooks
+                            &amp; APIs, WooCommerce, Shopify Theme Customization, Liquid, Online Store 2.0 Sections.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-950 border border-white/10">
+                        <div class="text-xs font-mono text-sky-400 font-bold mb-1">FULL-STACK &amp; DATABASES</div>
+                        <p class="text-xs text-slate-300">PHP, Node.js, Express.js, REST APIs, HTML5, CSS3, JavaScript,
+                            React.js, Tailwind CSS, Bootstrap, MySQL, MongoDB, PostgreSQL, Git, Docker, AWS.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold mb-2">Experience
+                        Highlights</h4>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+                            <div class="font-bold text-white">Skylan Information — Web Developer (Nov 2024 – Present |
+                                Noida)</div>
+                            <div class="text-slate-400 mt-1">WordPress, PHP, Shopify, Liquid, Node.js, Express.js,
+                                MySQL, MongoDB, REST APIs.</div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+                            <div class="font-bold text-white">Weblozy Software — Web Developer (Mar 2024 – Aug 2024 |
+                                Noida)</div>
+                            <div class="text-slate-400 mt-1">Built automated invoice generation system integrated with
+                                MySQL work orders, reducing manual processing time by 60%.</div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/10">
+                            <div class="font-bold text-white">Offshore Marketers — Web Developer Trainee (Jul 2023 – Jan
+                                2024 | Chandigarh)</div>
+                            <div class="text-slate-400 mt-1">Customized responsive WordPress/PHP websites and resolved
+                                50+ production bugs across client platforms.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: GITHUB PAGES & RENDER DEPLOYMENT GUIDE MODAL -->
+    <div id="deploy-modal"
+        class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div
+            class="relative w-full max-w-2xl rounded-3xl bg-slate-900 border border-white/15 shadow-2xl p-6 sm:p-8 space-y-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-lime-400/20 text-lime-300 flex items-center justify-center">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl font-bold text-white">Deploy to GitHub Pages &amp; Render</h3>
+                        <p class="text-xs font-mono text-slate-400">100% Static Single-File Ready (`index.html`)</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('deploy-modal')"
+                    class="w-9 h-9 rounded-xl bg-white/10 text-white hover:bg-white/20 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm text-slate-300">
+                <div class="p-4 rounded-2xl bg-slate-950 border border-white/10 space-y-2">
+                    <div class="font-mono font-bold text-sky-400">Option 1: Deploy on GitHub Pages</div>
+                    <ol class="list-decimal list-inside space-y-1 text-slate-300">
+                        <li>Create a new public repository on <a href="https://github.com/adityasingh44" target="_blank"
+                                class="text-sky-400 underline">github.com/adityasingh44</a> (e.g.
+                            <code>aditya-portfolio</code>).
+                        </li>
+                        <li>Upload this <code>index.html</code> file to the root of the repository.</li>
+                        <li>Go to <strong>Settings → Pages → Build and deployment</strong>, select <strong>Deploy from a
+                                branch (main / root)</strong>, and click Save.</li>
+                    </ol>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-950 border border-white/10 space-y-2">
+                    <div class="font-mono font-bold text-lime-400">Option 2: Deploy on Render (Static Site)</div>
+                    <ol class="list-decimal list-inside space-y-1 text-slate-300">
+                        <li>Log in to <strong>dashboard.render.com</strong> and click <strong>New + → Static
+                                Site</strong>.</li>
+                        <li>Connect your GitHub repository containing this <code>index.html</code> file.</li>
+                        <li>Leave <strong>Build Command</strong> blank and set <strong>Publish Directory</strong> to
+                            <code>.</code> (dot) — click <strong>Create Static Site</strong>.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="closeModal('deploy-modal')"
+                    class="px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-lime-400 text-slate-950">Got
+                    It!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PORTFOLIO DATA & INTERACTIVE SCRIPTS -->
+    <script>
+        // 1. ALL 10 REAL PRODUCTION PROJECTS DATA (With Custom Visual Mockup Themes)
+        const projectsData = [
+            {
+                id: "skylan-it",
+                title: "Skylan IT",
+                url: "https://skylanit.com/",
+                domain: "skylanit.com",
+                category: "wordpress",
+                categoryBadge: "WordPress Enterprise",
+                accentGradient: "from-sky-500/30 via-blue-600/20 to-slate-900",
+                pillColor: "text-sky-300 bg-sky-500/15 border-sky-500/30",
+                mockupTitle: "Enterprise IT & Cloud Solutions",
+                mockupMetric: "99.4% Uptime • Custom WP Theme",
+                summary: "Corporate IT & technology consulting platform engineered with a custom WordPress theme, modular PHP service templates, interactive UI sections, and high-converting lead capture workflows.",
+                highlights: [
+                    "Developed custom responsive WordPress templates and reusable PHP components tailored to IT service verticals.",
+                    "Implemented custom action/filter hooks, dynamic service inquiry forms, and technical SEO schema markup.",
+                    "Optimized Core Web Vitals, asset delivery, and mobile navigation for enterprise clients."
+                ],
+                tech: ["WordPress", "PHP", "Custom Theme", "JavaScript", "HTML5/CSS3", "MySQL"]
+            },
+            {
+                id: "babies-of-wonder",
+                title: "Babies of Wonder",
+                url: "https://babiesofwonder.com/",
+                domain: "babiesofwonder.com",
+                category: "shopify",
+                categoryBadge: "Shopify Ecommerce",
+                accentGradient: "from-lime-500/30 via-emerald-600/20 to-slate-900",
+                pillColor: "text-lime-300 bg-lime-500/15 border-lime-500/30",
+                mockupTitle: "Curated Baby & Kids Storefront",
+                mockupMetric: "Shopify OS 2.0 • Liquid Sections",
+                summary: "High-converting Shopify ecommerce store customized with bespoke Online Store 2.0 Liquid sections, soft modern brand aesthetics, intuitive collection filtering, and streamlined mobile checkout UX.",
+                highlights: [
+                    "Engineered reusable Shopify 2.0 Liquid sections and customizable JSON schema blocks for effortless merchant updates.",
+                    "Customized product detail pages, variant selectors, and slide-out Ajax cart drawer for higher average order value.",
+                    "Crafted mobile-first responsive styling and fast-loading image carousels."
+                ],
+                tech: ["Shopify", "Liquid", "OS 2.0 Sections", "JavaScript", "HTML5/CSS3", "Ecommerce UX"]
+            },
+            {
+                id: "delhi-bar-council",
+                title: "Delhi Bar Council Portal",
+                url: "https://delhibarcouncil.com/",
+                domain: "delhibarcouncil.com",
+                category: "php",
+                categoryBadge: "Core PHP & MySQL",
+                accentGradient: "from-indigo-500/30 via-purple-600/20 to-slate-900",
+                pillColor: "text-indigo-300 bg-indigo-500/15 border-indigo-500/30",
+                mockupTitle: "Legal Institutional & Member Portal",
+                mockupMetric: "Core PHP • MySQL Database",
+                summary: "Database-driven legal and institutional web portal built with Core PHP and MySQL, delivering structured advocate directories, official notifications, document workflows, and responsive accessibility.",
+                highlights: [
+                    "Architected dynamic server-side PHP modules connected to structured MySQL relational tables.",
+                    "Built fast search/lookup interfaces, notice board management, and secure form submissions.",
+                    "Designed a clean, authoritative, and mobile-responsive frontend layout."
+                ],
+                tech: ["Core PHP", "MySQL", "JavaScript", "HTML5", "CSS3", "Bootstrap"]
+            },
+            {
+                id: "skylan-digital",
+                title: "Skylan Digital",
+                url: "https://skylandigital.com/",
+                domain: "skylandigital.com",
+                category: "wordpress",
+                categoryBadge: "WordPress Agency",
+                accentGradient: "from-cyan-500/30 via-sky-600/20 to-slate-900",
+                pillColor: "text-cyan-300 bg-cyan-500/15 border-cyan-500/30",
+                mockupTitle: "Digital Marketing & Growth Studio",
+                mockupMetric: "Custom UI • Lead Funnel",
+                summary: "Modern digital agency website featuring interactive frontend animations, custom WordPress page templates, portfolio showcases, and conversion-focused landing pages.",
+                highlights: [
+                    "Built custom WordPress theme layouts with smooth CSS3/JS scroll animations and dynamic service cards.",
+                    "Integrated multi-step lead capture forms and backend CRM/email notification hooks.",
+                    "Delivered full responsiveness across mobile, tablet, and widescreen displays."
+                ],
+                tech: ["WordPress", "PHP", "JavaScript", "HTML5/CSS3", "Responsive UI"]
+            },
+            {
+                id: "offshore-marketers",
+                title: "Offshore Marketers",
+                url: "https://offshoremarketers.com/",
+                domain: "offshoremarketers.com",
+                category: "wordpress",
+                categoryBadge: "WordPress Platform",
+                accentGradient: "from-blue-500/30 via-indigo-600/20 to-slate-900",
+                pillColor: "text-sky-300 bg-sky-500/15 border-sky-500/30",
+                mockupTitle: "Global Performance Marketing Hub",
+                mockupMetric: "50+ Bugs Fixed • High Speed",
+                summary: "Full-scale digital marketing agency website customized with dynamic WordPress templates, case study modules, lead generation funnels, and extensive cross-browser performance optimization.",
+                highlights: [
+                    "Customized WordPress theme templates, custom post types, and interactive service comparison layouts.",
+                    "Resolved 50+ production bugs and frontend/backend bottlenecks across client and agency properties.",
+                    "Improved page load speed and mobile conversion flow."
+                ],
+                tech: ["WordPress", "PHP", "WordPress Hooks", "JavaScript", "MySQL", "CSS3"]
+            },
+            {
+                id: "tapioca-express",
+                title: "Tapioca Express",
+                url: "https://tapiocaexpress.com/",
+                domain: "tapiocaexpress.com",
+                category: "wordpress",
+                categoryBadge: "WordPress Brand UI",
+                accentGradient: "from-amber-500/30 via-orange-600/20 to-slate-900",
+                pillColor: "text-amber-300 bg-amber-500/15 border-amber-500/30",
+                mockupTitle: "Interactive Beverage & Menu Experience",
+                mockupMetric: "Custom CPT • Store Locator",
+                summary: "Vibrant food & beverage brand platform featuring interactive menu showcases, custom post types for drinks/snacks, store locator integration, and playful mobile-first frontend design.",
+                highlights: [
+                    "Engineered custom WordPress menu categories and visual product cards using PHP and Custom Post Types.",
+                    "Designed engaging frontend micro-interactions and responsive navigation for mobile customers.",
+                    "Integrated location/franchise inquiry workflows."
+                ],
+                tech: ["WordPress", "PHP", "Custom Post Types", "JavaScript", "HTML5/CSS3"]
+            },
+            {
+                id: "hemp-harvest-works",
+                title: "Hemp Harvest Works",
+                url: "https://hempharvestworks.com/",
+                domain: "hempharvestworks.com",
+                category: "wordpress",
+                categoryBadge: "WordPress & Woo",
+                accentGradient: "from-emerald-500/30 via-teal-600/20 to-slate-900",
+                pillColor: "text-emerald-300 bg-emerald-500/15 border-emerald-500/30",
+                mockupTitle: "Agricultural & Hemp Solutions",
+                mockupMetric: "WooCommerce • Custom Theme",
+                summary: "Specialized agricultural and hemp equipment platform built on WordPress, combining educational content architecture with custom product showcase templates and inquiry workflows.",
+                highlights: [
+                    "Customized WordPress theme and product catalog layouts tailored to agricultural machinery and supplies.",
+                    "Implemented custom PHP templates, filtering, and responsive specification tables.",
+                    "Optimized database queries and image delivery."
+                ],
+                tech: ["WordPress", "WooCommerce", "PHP", "JavaScript", "HTML5/CSS3", "MySQL"]
+            },
+            {
+                id: "bish-enterprise",
+                title: "Bish Enterprise",
+                url: "https://bishenterprise.com/",
+                domain: "bishenterprise.com",
+                category: "wordpress",
+                categoryBadge: "WordPress Corporate",
+                accentGradient: "from-violet-500/30 via-indigo-600/20 to-slate-900",
+                pillColor: "text-violet-300 bg-violet-500/15 border-violet-500/30",
+                mockupTitle: "B2B Commercial Enterprise Portal",
+                mockupMetric: "Custom Theme • Fast UX",
+                summary: "Corporate business website engineered with clean WordPress PHP templates, structured service showcases, custom quote request forms, and fast cross-device performance.",
+                highlights: [
+                    "Developed responsive WordPress layouts and reusable content blocks for B2B service presentation.",
+                    "Integrated secure contact and quotation forms backed by PHP validation.",
+                    "Ensured strict cross-browser compatibility and SEO structure."
+                ],
+                tech: ["WordPress", "PHP", "JavaScript", "HTML5", "CSS3", "MySQL"]
+            },
+            {
+                id: "money-cages",
+                title: "Money Cages",
+                url: "https://moneycages.com/",
+                domain: "moneycages.com",
+                category: "wordpress",
+                categoryBadge: "WordPress Ecommerce",
+                accentGradient: "from-rose-500/30 via-pink-600/20 to-slate-900",
+                pillColor: "text-rose-300 bg-rose-500/15 border-rose-500/30",
+                mockupTitle: "Promotional Event & Cash Cube Store",
+                mockupMetric: "WooCommerce • Conversion UI",
+                summary: "Ecommerce and promotional event equipment website built on WordPress & WooCommerce featuring custom product galleries, pricing configurations, and conversion-focused checkout flows.",
+                highlights: [
+                    "Customized WooCommerce product templates, gallery zoom, and custom order attributes.",
+                    "Enhanced storefront UI/UX to streamline product comparison and checkout completion.",
+                    "Configured payment gateway and shipping calculation hooks."
+                ],
+                tech: ["WordPress", "WooCommerce", "PHP", "JavaScript", "HTML5/CSS3"]
+            },
+            {
+                id: "vibra-social",
+                title: "Vibra — Social Platform",
+                url: "https://github.com/adityasingh44",
+                domain: "github.com/adityasingh44",
+                category: "fullstack",
+                categoryBadge: "Full-Stack MERN + Socket.IO",
+                accentGradient: "from-fuchsia-500/30 via-indigo-600/20 to-slate-900",
+                pillColor: "text-fuchsia-300 bg-fuchsia-500/15 border-fuchsia-500/30",
+                mockupTitle: "Real-Time Social & Messaging App",
+                mockupMetric: "React • Node • Socket.IO • JWT",
+                summary: "Full-stack social platform (Mar 2025 – May 2025) featuring posts, stories, comments, likes, media uploads, real-time instant messaging via Socket.IO, and JWT authentication.",
+                highlights: [
+                    "Architected RESTful APIs and MongoDB data models using Node.js and Express.js.",
+                    "Implemented real-time bi-directional chat and live notifications with Socket.IO.",
+                    "Built a responsive React.js frontend with JWT-secured authentication flows."
+                ],
+                tech: ["Node.js", "Express.js", "React.js", "MongoDB", "Socket.IO", "JWT"]
+            }
+        ];
+
+        // 2. HERO SHOWCASE DATA
+        const heroShowcases = [
+            {
+                badge: "WORDPRESS ENTERPRISE",
+                url: "skylanit.com",
+                link: "https://skylanit.com/",
+                icon: "S",
+                title: "Skylan IT Solutions",
+                tag: "Custom WordPress Theme & PHP",
+                heading: "Enterprise IT Architecture & Digital Transformation",
+                pill1: "Custom Hooks",
+                pill2: "Responsive UI"
+            },
+            {
+                badge: "SHOPIFY ECOMMERCE",
+                url: "babiesofwonder.com",
+                link: "https://babiesofwonder.com/",
+                icon: "B",
+                title: "Babies of Wonder Store",
+                tag: "Shopify Liquid & Online Store 2.0",
+                heading: "Bespoke Baby Collection Sections & Ajax Cart UX",
+                pill1: "Liquid Schema",
+                pill2: "Conversion UI"
+            },
+            {
+                badge: "CORE PHP PORTAL",
+                url: "delhibarcouncil.com",
+                link: "https://delhibarcouncil.com/",
+                icon: "D",
+                title: "Delhi Bar Council",
+                tag: "Core PHP & MySQL Architecture",
+                heading: "Database-Driven Legal Member & Notice Portal",
+                pill1: "PHP 8 + MySQL",
+                pill2: "Fast Lookup"
+            },
+            {
+                badge: "FULL-STACK SOCIAL",
+                url: "github.com/adityasingh44",
+                link: "https://github.com/adityasingh44",
+                icon: "V",
+                title: "Vibra Social App",
+                tag: "Node.js • React.js • Socket.IO",
+                heading: "Real-Time Messaging, Stories & JWT Auth Platform",
+                pill1: "Socket.IO Live",
+                pill2: "MongoDB API"
+            }
+        ];
+
+        function setHeroShowcase(idx) {
+            const item = heroShowcases[idx];
+            document.getElementById('hero-preview-badge').textContent = item.badge;
+            document.getElementById('hero-preview-url').textContent = item.url;
+            document.getElementById('hero-preview-link').href = item.link;
+            document.getElementById('hero-stage-icon').textContent = item.icon;
+            document.getElementById('hero-stage-title').textContent = item.title;
+            document.getElementById('hero-stage-tag').textContent = item.tag;
+            document.getElementById('hero-stage-heading').textContent = item.heading;
+            document.getElementById('hero-stage-pill1').textContent = item.pill1;
+            document.getElementById('hero-stage-pill2').textContent = item.pill2;
+
+            document.querySelectorAll('.hero-dot').forEach((btn, i) => {
+                if (i === idx) {
+                    btn.className = "hero-dot px-2 py-0.5 rounded bg-sky-500 text-slate-950 font-bold transition";
+                } else {
+                    btn.className = "hero-dot px-2 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 transition";
+                }
+            });
+        }
+
+        // 3. RENDER ALL 10 PROJECTS WITH VISUAL BROWSER MOCKUPS
+        function renderProjectsGrid(filter = 'all') {
+            const grid = document.getElementById('projects-showcase-grid');
+            const list = filter === 'all' ? projectsData : projectsData.filter(p => p.category === filter);
+
+            grid.innerHTML = list.map((p, index) => `
+        <article class="project-card spotlight-card tilt-card rounded-3xl border border-white/10 flex flex-col justify-between overflow-hidden group">
+          
+          <!-- Top Browser Window Mockup Frame -->
+          <div>
+            <div class="px-4 py-2.5 bg-slate-950 border-b border-white/10 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500/90"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400/90"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400/90"></span>
+              </div>
+              <div class="px-3 py-1 rounded-lg bg-white/[0.04] border border-white/5 text-[11px] font-mono text-slate-300 truncate max-w-[200px] flex items-center gap-1.5">
+                <i class="fa-solid fa-lock text-[9px] text-emerald-400"></i>
+                <span class="truncate">${p.domain}</span>
+              </div>
+              <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-sky-400 hover:text-lime-400 transition" title="Open ${p.title}">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
+
+            <!-- Custom Visual UI Wireframe Artwork -->
+            <div class="relative h-48 overflow-hidden bg-gradient-to-br ${p.accentGradient} p-5 flex flex-col justify-between border-b border-white/10">
+              <div class="mockup-screen h-full flex flex-col justify-between relative z-10">
+                <!-- Mockup Top Nav -->
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold border ${p.pillColor}">
+                    ${p.categoryBadge}
+                  </span>
+                  <span class="text-[10px] font-mono text-slate-300 bg-black/40 px-2.5 py-1 rounded-full backdrop-blur-md">
+                    0${index + 1}
+                  </span>
+                </div>
+
+                <!-- Mockup Center Visual UI Preview -->
+                <div class="my-auto py-2">
+                  <div class="text-[11px] font-mono text-slate-300/90">${p.mockupMetric}</div>
+                  <div class="font-display text-lg font-extrabold text-white leading-snug mt-0.5">${p.mockupTitle}</div>
+                </div>
+
+                <!-- Mockup Bottom Status Bar -->
+                <div class="flex items-center justify-between bg-slate-950/75 backdrop-blur-md px-3 py-2 rounded-xl border border-white/10">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-[11px] font-mono text-slate-200">Production Live</span>
+                  </div>
+                  <span class="text-[11px] font-mono text-lime-400 font-semibold group-hover:translate-x-0.5 transition-transform">Preview UI →</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Body Content -->
+            <div class="p-6">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <h3 class="font-display text-xl font-bold text-white group-hover:text-sky-300 transition">${p.title}</h3>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                ${p.summary}
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                ${p.tech.map(t => `
+                  <span class="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-white/[0.04] border border-white/5 text-slate-300">${t}</span>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer Actions -->
+          <div class="px-6 py-4 bg-slate-950/60 border-t border-white/10 flex items-center justify-between gap-3">
+            <button onclick="openProjectCaseStudy('${p.id}')" class="text-xs font-mono font-semibold text-slate-300 hover:text-sky-400 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-magnifying-glass-chart text-sky-400"></i>
+              <span>Architecture</span>
+            </button>
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold bg-white/10 hover:bg-gradient-to-r hover:from-sky-400 hover:to-lime-400 hover:text-slate-950 text-white transition">
+              <span>Visit Live Site</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+
+        </article>
+      `).join('');
+
+            initSpotlightAndTilt();
+        }
+
+        function filterProjects(category) {
+            document.querySelectorAll('.proj-filter-btn').forEach(btn => {
+                if (btn.dataset.projTab === category) {
+                    btn.className = "proj-filter-btn px-4 py-2.5 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-sky-400 to-lime-400 text-slate-950 shadow-md transition";
+                } else {
+                    btn.className = "proj-filter-btn px-4 py-2.5 rounded-xl text-xs font-mono font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition";
+                }
+            });
+            renderProjectsGrid(category);
+        }
+
+        function openProjectCaseStudy(id) {
+            const p = projectsData.find(item => item.id === id);
+            if (!p) return;
+            document.getElementById('pm-header-banner').className = `h-36 p-6 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br ${p.accentGradient}`;
+            document.getElementById('pm-category').textContent = p.categoryBadge;
+            document.getElementById('pm-title').textContent = p.title;
+            document.getElementById('pm-url-text').textContent = p.url;
+            document.getElementById('pm-live-btn').href = p.url;
+            document.getElementById('pm-desc').textContent = p.summary;
+            document.getElementById('pm-highlights').innerHTML = p.highlights.map(h => `
+        <li class="flex items-start gap-2.5">
+          <i class="fa-solid fa-circle-check text-lime-400 mt-1 text-xs"></i>
+          <span>${h}</span>
+        </li>
+      `).join('');
+            document.getElementById('pm-tech').innerHTML = p.tech.map(t => `
+        <span class="px-2.5 py-1 rounded-lg text-xs font-mono bg-white/5 border border-white/10 text-slate-200">${t}</span>
+      `).join('');
+            openModal('project-modal');
+        }
+
+        // 4. INTERACTIVE CODE STUDIO SWITCHER
+        function switchStudioTab(tab) {
+            const tabs = ['wp', 'shopify', 'invoice'];
+            tabs.forEach(t => {
+                const codeEl = document.getElementById(`studio-code-${t}`);
+                const btnEl = document.getElementById(`studio-tab-${t}`);
+                if (t === tab) {
+                    codeEl.classList.remove('hidden');
+                    btnEl.className = "px-4 py-2 rounded-xl text-xs font-mono font-bold bg-sky-500 text-slate-950 transition flex items-center gap-2";
+                } else {
+                    codeEl.classList.add('hidden');
+                    btnEl.className = "px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white/5 text-slate-300 hover:text-white transition flex items-center gap-2";
+                }
+            });
+
+            const stage = document.getElementById('studio-output-stage');
+            const badge = document.getElementById('studio-output-badge');
+
+            if (tab === 'wp') {
+                badge.textContent = "WordPress + Woo";
+                stage.innerHTML = `
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-brands fa-wordpress text-sky-400 text-lg"></i>
+              <span class="text-xs font-bold text-white">REST Endpoint + Cart Fragment</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300">200 OK</span>
+          </div>
+          <div class="p-3 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
+            <span class="text-xs text-slate-300">WooCommerce Ajax Cart Header</span>
+            <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-sky-500 text-slate-950">3 Items • ₹4,290</span>
+          </div>
+          <div class="text-xs font-mono text-slate-400">
+            Endpoint: <code class="text-sky-300">POST /wp-json/skylan/v1/lead-capture</code>
+          </div>
+        `;
+            } else if (tab === 'shopify') {
+                badge.textContent = "Shopify Liquid OS 2.0";
+                stage.innerHTML = `
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-brands fa-shopify text-lime-400 text-lg"></i>
+              <span class="text-xs font-bold text-white">Babies of Wonder — Product Card</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-lime-500/20 text-lime-300">Liquid Rendered</span>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold text-white">Organic Cotton Baby Romper</div>
+              <div class="text-xs font-mono text-lime-400 mt-0.5">$28.00 USD • In Stock</div>
+            </div>
+            <button onclick="showToast('Shopify Ajax Quick-Add triggered!')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-lime-400 text-slate-950 hover:brightness-110">
+              + Quick Add
+            </button>
+          </div>
+        `;
+            } else {
+                badge.textContent = "Node.js + MySQL Automation";
+                stage.innerHTML = `
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-file-invoice-dollar text-amber-400 text-lg"></i>
+              <span class="text-xs font-bold text-white">Work-Order Invoice Generator</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-300">-60% Manual Time</span>
+          </div>
+          <div class="p-3 rounded-xl bg-white/[0.03] border border-white/5 font-mono text-xs space-y-1">
+            <div class="flex justify-between"><span class="text-slate-400">Work Order ID:</span><span class="text-white">#WO-8842</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">MySQL Sync:</span><span class="text-emerald-400">Verified ✓</span></div>
+            <div class="flex justify-between"><span class="text-slate-400">Processing Speed:</span><span class="text-lime-400">60% Faster</span></div>
+          </div>
+        `;
+            }
+        }
+
+        // 5. SKILLS DATA & RENDERER
+        const skillsData = [
+            {
+                title: "WordPress Ecosystem",
+                category: "cms",
+                level: "96%",
+                icon: "fa-brands fa-wordpress text-sky-400",
+                skills: ["WordPress Theme Development", "Plugin Development", "Theme & Plugin Customization", "WordPress Action/Filter Hooks", "WordPress REST APIs", "WooCommerce"]
+            },
+            {
+                title: "Shopify & Ecommerce",
+                category: "cms",
+                level: "92%",
+                icon: "fa-brands fa-shopify text-lime-400",
+                skills: ["Shopify Theme Development", "Shopify Theme Customization", "Liquid Templating", "Online Store 2.0 Sections", "Store Customization", "Ecommerce Conversion UX"]
+            },
+            {
+                title: "Frontend Architecture & UI",
+                category: "frontend",
+                level: "94%",
+                icon: "fa-brands fa-react text-cyan-400",
+                skills: ["HTML5 & Semantic Markup", "CSS3 & Animations", "JavaScript (ES6+)", "React.js", "Tailwind CSS", "Bootstrap & Responsive Design"]
+            },
+            {
+                title: "Backend & API Engineering",
+                category: "backend",
+                level: "90%",
+                icon: "fa-brands fa-php text-indigo-400",
+                skills: ["Core PHP", "Node.js", "Express.js", "REST API Design", "Third-Party API Integration", "Payment Gateway Integration"]
+            },
+            {
+                title: "Databases & Data Layer",
+                category: "backend",
+                level: "89%",
+                icon: "fa-solid fa-database text-emerald-400",
+                skills: ["MySQL", "MongoDB", "PostgreSQL", "Database-Driven Web Apps", "Work-Order Automation", "Query Optimization"]
+            },
+            {
+                title: "DevOps, Tools & Optimization",
+                category: "backend",
+                level: "88%",
+                icon: "fa-brands fa-git-alt text-amber-400",
+                skills: ["Git & GitHub", "Docker & AWS", "GitHub Actions CI/CD", "Postman API Testing", "50+ Production Bug Fixing", "Performance Optimization"]
+            }
+        ];
+
+        function renderSkillsMatrix(filter = 'all') {
+            const grid = document.getElementById('skills-matrix-grid');
+            const filtered = filter === 'all' ? skillsData : skillsData.filter(s => s.category === filter);
+
+            grid.innerHTML = filtered.map(group => `
+        <div class="spotlight-card rounded-3xl p-6 sm:p-7 border border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl">
+                  <i class="${group.icon}"></i>
+                </div>
+                <h3 class="font-display text-lg font-bold text-white">${group.title}</h3>
+              </div>
+              <span class="text-xs font-mono font-bold text-sky-400">${group.level}</span>
+            </div>
+
+            <!-- Animated Proficiency Bar -->
+            <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden mb-5">
+              <div class="h-full bg-gradient-to-r from-sky-400 via-indigo-400 to-lime-400 rounded-full" style="width: ${group.level}"></div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              ${group.skills.map(skill => `
+                <span class="px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-950/90 border border-white/10 text-slate-200">
+                  ${skill}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+            initSpotlightAndTilt();
+        }
+
+        function filterSkills(category) {
+            document.querySelectorAll('.skill-filter-btn').forEach(btn => {
+                if (btn.dataset.skillTab === category) {
+                    btn.className = "skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-bold bg-sky-400 text-slate-950 transition";
+                } else {
+                    btn.className = "skill-filter-btn px-4 py-2 rounded-xl text-xs font-mono font-semibold bg-white/5 text-slate-300 hover:text-white transition";
+                }
+            });
+            renderSkillsMatrix(category);
+        }
+
+        // 6. CONTACT & WHATSAPP DISPATCH
+        function selectInquiryType(btn, type) {
+            document.getElementById('inquiry-type').value = type;
+            document.querySelectorAll('.inq-btn').forEach(b => {
+                b.className = "inq-btn p-3 rounded-2xl border border-white/10 bg-white/[0.03] text-slate-300 hover:border-sky-400/50 text-xs font-bold flex flex-col items-center gap-1.5 transition";
+            });
+            btn.className = "inq-btn p-3 rounded-2xl border border-sky-400 bg-sky-500/15 text-sky-300 text-xs font-bold flex flex-col items-center gap-1.5 transition";
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('inq-name').value.trim();
+            const email = document.getElementById('inq-email').value.trim();
+            const type = document.getElementById('inquiry-type').value;
+            const msg = document.getElementById('inq-msg').value.trim();
+
+            const subject = encodeURIComponent(`[${type}] Portfolio Inquiry from ${name}`);
+            const body = encodeURIComponent(`Hi Aditya,\n\nName: ${name}\nEmail: ${email}\nRequirement: ${type}\n\nDetails:\n${msg}`);
+            window.location.href = `mailto:adityasingh5100@gmail.com?subject=${subject}&body=${body}`;
+            showToast(`Email inquiry prepared for ${type}!`);
+        }
+
+        function sendViaWhatsApp() {
+            const name = document.getElementById('inq-name').value.trim() || 'Client';
+            const type = document.getElementById('inquiry-type').value;
+            const msg = document.getElementById('inq-msg').value.trim() || 'Hi Aditya, I checked your portfolio and would like to discuss a project.';
+            const text = encodeURIComponent(`Hi Aditya! I'm ${name} inquiring about *${type}*.\n\n${msg}`);
+            window.open(`https://wa.me/918416913897?text=${text}`, '_blank');
+        }
+
+        // 7. MODAL & CLIPBOARD HELPERS
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if (!m) return;
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            if (!m) return;
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function copyText(text, msg) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast(msg);
+            } catch (e) {
+                showToast('Please copy manually: ' + text);
+            }
+            document.body.removeChild(ta);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = message;
+            toast.classList.remove('translate-y-28', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-28', 'opacity-0');
+            }, 3000);
+        }
+
+        // 8. SPOTLIGHT RADIAL GLOW & 3D PERSPECTIVE TILT ENGINE
+        function initSpotlightAndTilt() {
+            document.querySelectorAll('.spotlight-card').forEach(card => {
+                card.onmousemove = (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+
+                    if (card.classList.contains('tilt-card') && window.innerWidth > 1024) {
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -3.5;
+                        const rotateY = ((x - centerX) / centerX) * 3.5;
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-3px)`;
+                    }
+                };
+
+                card.onmouseleave = () => {
+                    if (card.classList.contains('tilt-card')) {
+                        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+                    }
+                };
+            });
+        }
+
+        // 9. HTML5 CANVAS INTERACTIVE CONSTELLATION PARTICLE NETWORK
+        function initConstellationCanvas() {
+            const canvas = document.getElementById('constellation-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height, particles;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                const count = Math.min(Math.floor((width * height) / 24000), 55);
+                particles = Array.from({ length: count }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.35,
+                    vy: (Math.random() - 0.5) * 0.35,
+                    r: Math.random() * 1.6 + 0.6
+                }));
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(56, 189, 248, 0.55)';
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                        if (dist < 135) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(99, 102, 241, ${(1 - dist / 135) * 0.22})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            animate();
+        }
+
+        // 10. INITIALIZATION ON WINDOW LOAD
+        window.onload = function () {
+            renderProjectsGrid('all');
+            renderSkillsMatrix('all');
+            switchStudioTab('wp');
+            initConstellationCanvas();
+
+            // Custom Dual Cursor Tracking
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            window.addEventListener('mousemove', (e) => {
+                if (dot && ring) {
+                    dot.style.left = `${e.clientX}px`;
+                    dot.style.top = `${e.clientY}px`;
+                    ring.style.left = `${e.clientX}px`;
+                    ring.style.top = `${e.clientY}px`;
+                }
+            });
+
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest('a, button, input, textarea')) {
+                    document.body.classList.add('cursor-hover');
+                } else {
+                    document.body.classList.remove('cursor-hover');
+                }
+            });
+
+            // Mobile Navigation Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            document.querySelectorAll('.mobile-link').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+
+            // Close modals on backdrop click
+            ['project-modal', 'resume-modal', 'deploy-modal'].forEach(id => {
+                document.getElementById(id).addEventListener('click', (e) => {
+                    if (e.target.id === id) closeModal(id);
+                });
+            });
+        };
+    </script>
+</body>
+
+</html>
